@@ -1,0 +1,19 @@
+{%extends 'blog/base.html'%}
+{%block title %}Мой кулинарный блог{%endblock%}
+{% block content %}
+    <h1>Это моя кулинарная книга</h1>
+    {% for post in posts %}
+        <h2>
+            <a href="{{ post.get_absolute_url }}">
+                {{ post.title }}
+            </a>
+        </h2>
+        <p class="date">Опубликовано
+            {{ post.publish }} автор: {{ post.author }}
+            {{ post.body|truncatewords:30|linebreaks }}
+        </p>
+    {% endfor %}
+{% endblock %}
+
+cd mysite
+python manage.py runserver
