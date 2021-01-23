@@ -13,7 +13,9 @@
             {{ post.body|truncatewords:30|linebreaks }}
         </p>
     {% endfor %}
+
+    {% include "paginations.html" with page=posts %}
+
+
 {% endblock %}
 
-cd mysite
-python manage.py runserver
