@@ -3,9 +3,37 @@
     {{ post.title }}
 {% endblock %}
 {% block content %}
-    <h1>{{ post.title }}</h1>
-    <p class="date">Опубликовано
-        {{ post.publish }} автором
-        {{ post.author }}
-    </p>
+
+
+    <div class="container my-3">
+        <div class="card-deck">
+            <div class="card">
+                <img src="{{ MEDIA_URL }}{{ post.image.url }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.title }}</h5>
+                    <p class="card-text">{{ post.short_description }}</p>
+                </div>
+                {% for post_point in post_points %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post_point.post_point_header}}</h5>
+                        {% if post_point.post_image %}
+                            <img src="{{ MEDIA_URL }}{{ post_point.post_image.url }}" class="card-img-top" alt="..."
+                            style="width: 500px">
+                        {% endif %}
+                        {% if post_point.post_point_header == "Ингредиенты" %}
+                            <pre class="card-text">{{ post_point.post_point_text }}</pre>
+                        {% else %}
+                            <p class="card-text">{{ post_point.post_point_text }}</p>
+                        {% endif %}
+
+                    </div>
+                {% endfor %}
+                <div class="card-footer">
+                    <small class="text-muted">Опубликовано {{ post.publish }}. Автор {{ post.author }}</small>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 {% endblock %}

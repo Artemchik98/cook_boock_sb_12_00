@@ -59,6 +59,10 @@ class PostPoint(models.Model):
     post=models.ForeignKey(Post,
             on_delete=models.CASCADE,
             default=None)
+
+    post_header=models.CharField(max_length=250,
+                                 default='HEADER')
+
     post_point_text=models.TextField(
         verbose_name='Текст пункта')
     post_point_image=models.ImageField(
