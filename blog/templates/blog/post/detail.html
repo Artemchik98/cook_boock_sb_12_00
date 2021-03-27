@@ -13,6 +13,15 @@
                     <h5 class="card-title">{{ post.title }}</h5>
                     <p class="card-text">{{ post.short_description }}</p>
                 </div>
+
+                <p>
+                    <a href="{%   url 'blog:post_share' post.id %}">
+                        Поделиться рецептом
+
+                    </a>
+                </p>
+
+
                 {% for post_point in post_points %}
                     <div class="card-body">
                         <h5 class="card-title">{{ post_point.post_point_header}}</h5>
@@ -34,6 +43,74 @@
             </div>
 
         </div>
+
+    <div class="m-5">
+        {% if new_comment %}
+            <h2>Ваш комментарий добавлен</h2>
+        {% else %}
+            <h2>Добавить комментарий</h2>
+            <form action="." method="post">
+                <div class="form-group">
+                    <label for="nameInput">Имя</label>
+                    {{ comment_form.name }}
+                </div>
+                <div class="form-group">
+                    <label for="emailInput">
+                        Ваш E-mail
+                    </label>
+                    {{ comment_form.email }}
+                </div>
+
+                <div class="form-group">
+                    <label for="comment">
+                        Комментарий
+                    </label>
+                    {{ comment_form.comment }}
+                </div>
+
+                <button type="submit"
+                        class="btn btn-primary">
+                    Добавить комментарий
+                </button>
+                {% csrf_token %}
+
+            </form>
+
+
+        {% endif %}
+    </div>
+
+    <h2>Похожие рецепты</h2>
+    {% for post in similar_posts %}
+        <p>
+            <a href="{{ post.get_absolute_url }}">
+                {{ post.title }}
+            </a>
+        </p>
+    {% empty %}
+        Похожих рецептов ещё нет.
+    {% endfor %}
+
+
+    {% with comments.count as total_comments  %}
+        <h2>{{ total_comments }}
+            Комментариев</h2>
+    {% endwith %}
+    {% for comment in comments  %}
+        <div class="card border-dark mb-3">
+            <div class="card-header">
+                <b>{{ forloop.counter }}.</b>
+                {{ comment.name }},
+                E-mail {{ comment.email }}
+            </div>
+        <div class="card-body text-dark">
+            <p class="card-text">
+                {{ comment.body }}
+            </p>
+        </div>
+        </div>
+    {% endfor %}
+
     </div>
 
 {% endblock %}

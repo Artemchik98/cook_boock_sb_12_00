@@ -1,0 +1,27 @@
+{% extends 'blog/base.html' %}
+{% block title %}
+    Вход
+{% endblock %}
+{% block content %}
+    <div class="container text-center sign-in">
+        <form action="." method="post"
+        class="form-sign-in login-form">
+            <h1 class="mb-3 font-weight-normal">
+                Пожалуйста авторизируйтесь !
+            </h1>
+            <label for="inputLogin">
+                Логин
+            </label>
+            {{ form.username }}
+            <label for="inputPassword">
+                Пароль
+            </label>
+            {{ form.password }}
+            {% csrf_token %}
+            <button class="btn btn-lg btn-primary mt-2"
+            type="submit">
+                Войти
+            </button>
+        </form>
+    </div>
+{% endblock %}
