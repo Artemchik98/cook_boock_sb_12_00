@@ -1,0 +1,10 @@
+{% extends 'blog/base.html' %}
+{% block title %}
+    Выход
+{% endblock %}
+{% block content %}
+    <h1>Выход</h1>
+    <p>Вы успешно разлогинены.
+        Вы можете <a href="{% url 'blog:login' %}">Авторизироваться снова</a>
+    </p>
+{% endblock %}

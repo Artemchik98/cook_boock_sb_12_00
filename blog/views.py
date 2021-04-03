@@ -12,7 +12,7 @@ from taggit.models import Tag
 from django.http import HttpResponse
 from django.contrib.auth import authenticate,login
 from .forms import LoginForm
-
+from django.contrib.auth.decorators import login_required
 
 def user_login(request):
     if request.method=='POST':
@@ -39,6 +39,7 @@ def user_login(request):
           'blog/account/login.html',
                   {'form':form})
 
+@login_required
 def post_list(request,tag_slug=None):
     object_list = Post.objects.all()
     tag=None
@@ -62,7 +63,7 @@ def post_list(request,tag_slug=None):
                    'tag':tag})
 
 
-
+@login_required
 def post_detail(request,year,
                 month,day,post):
     post_object=get_object_or_404(Post,
@@ -111,6 +112,8 @@ def post_detail(request,year,
 
 from .forms import EmailPostForm
 from django.core.mail import send_mail
+
+@login_required
 def post_share(request,post_id):
     post=get_object_or_404(Post,
                        id=post_id,
@@ -144,3 +147,6 @@ def post_share(request,post_id):
                    'sent':sent})
 
 
+@login_required
+def dashboard(request):
+    return render(request,'blog/account/dashboard.html')
