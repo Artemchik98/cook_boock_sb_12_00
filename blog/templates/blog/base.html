@@ -29,6 +29,23 @@
                     <button class="btn btn-dark my-2 my-sm-0" type="submit">Search</button>
                 </form>
             </div>
+
+                
+            <div id="header">
+                <span class="user">
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'blog:dashboard' %}" class="pr-3">
+                            {{ request.user.first_name }}
+                        </a>
+                        <a href="{% url 'blog:logout' %}">Выйти</a>
+                    {% else %}
+                        <a href="{% url 'blog:login' %}">Войти</a>
+                    {% endif %} 
+                </span>
+            </div>
+
+
+        
         </nav>
    {% endblock %}
 

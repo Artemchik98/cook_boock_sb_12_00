@@ -149,4 +149,8 @@ def post_share(request,post_id):
 
 @login_required
 def dashboard(request):
-    return render(request,'blog/account/dashboard.html')
+    user=request.user
+    posts_pub=Post.objects.filter(author=user,status='published')
+    posts_draft=Post.objects.filter(author=user,status='draft')
+    return render(request,'blog/account/dashboard.html',{'posts_pub':posts_pub,
+                                                         'posts_draft':posts_draft})
