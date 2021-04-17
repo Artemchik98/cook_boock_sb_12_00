@@ -5,6 +5,8 @@ from django.utils import timezone
 from django.contrib.auth .models import User
 from django.urls import reverse
 from taggit.managers import TaggableManager
+from slugify import slugify
+
 
 class Post(models.Model):
     STATUS_CHOICES=(
@@ -52,6 +54,11 @@ class Post(models.Model):
                          self.publish.month,
                          self.publish.day,
                          self.slug])
+
+    def save(self,*args,**kwargs):
+        self.slug=slugify(self.title)
+        return super(Post,self).save(*args,**kwargs)
+        
 
 def save_image(instance,filename):
     post_id=instance.post.id

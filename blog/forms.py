@@ -1,5 +1,5 @@
 from  django import forms
-from .models import Comment
+from .models import Comment, Post
 class EmailPostForm(forms.Form):
     name=forms.CharField(max_length=25,
         widget=forms.TextInput(attrs={
@@ -55,3 +55,9 @@ class LoginForm(forms.Form):
             'id':'inputPassword',
             'class':'form-control',
             'placeholder':'Пароль'}))
+
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model=Post
+        fields=('title','short_description','image','tags')
