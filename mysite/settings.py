@@ -26,7 +26,7 @@ SECRET_KEY = 'c+67_4@(6!m-)oxwbh=+awa8a7dqi!xnl5z)b@ytp)@yv(drbb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['coocking-book-12-00.herokuapp.com','localhost','127.0.0.1']
 
 
 # Application definition
@@ -51,6 +51,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -136,3 +140,6 @@ EMAIL_USE_TLS=True
 LOGIN_REDIRECT_URL='blog:post_list'
 LOGIN_URL='blog:login'
 LOGOUT_URL='blog:logout'
+
+
+STATIC_ROOT=os.path.join(BASE_DIR, 'staticfiles')
