@@ -1,0 +1,29 @@
+{% extends 'blog/base.html' %}
+{% block title %}
+    Личный кабинет
+{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-3 left-navbar">
+                {% block left-navbar %}
+                    <h2 class="text-center mb-5">Функции ЛК</h2>
+                    <ul>
+                        <li>
+                            <a href="{% url 'blog:dashboard'%}">Мои посты</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'blog:post_add'%}">
+                                Добавить пост
+                            </a>
+                        </li>
+                    </ul>
+                {% endblock %}
+            </div>
+            <div class="col-8 account-content">
+                {% block account-content %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
