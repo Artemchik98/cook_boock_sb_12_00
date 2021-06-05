@@ -1,7 +1,7 @@
 {% extends 'blog/base_account.html' %}
 {% load bootstrap %}
 {% block title %}
-    Добавление поста
+    Редактирование поста
 {% endblock %}
 {% block account-content %}
     <div class="container text-center sign-in">
@@ -14,13 +14,13 @@
                 {{ form|bootstrap }}
                 <button type="submit"
                     class="btn btn-lg btn-primary mt-2">
-                    Добавить рецепт
+                    Сохранить изменения
                 </button>
                 {% csrf_token %}
             </form>
         {% elif form.is_valid %}
             <h1 class="h3 mb-3 font-weight-normal">
-                Пост отправлен на модерацию
+                Пост успешно изменём
             </h1>
             <h2 class="mb-3 font-weight-normal">
                 Вы можете:
@@ -29,9 +29,9 @@
                 class="btn btn-dark">
                     Вернуться к списку ваших постов
                 </a>
-                <a href="{% url 'blog:post_add' %}"
+                <a href="{% url 'blog:post_edit' post.id %}"
                 class="btn btn-primary">
-                    Добавить пост
+                    Редактировать пост ещё раз
                 </a>
 
         {% else %}
