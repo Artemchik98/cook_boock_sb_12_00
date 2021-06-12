@@ -26,5 +26,10 @@ urlpatterns=[
 
     path('post_points_list/<int:post_id>/',
          views.post_point_list,
-         name='post_points_list')
+         name='post_points_list'),
+
+    path('post_points_add/',
+         views.post_point_add,
+         name='post_point_add')
+
 ]

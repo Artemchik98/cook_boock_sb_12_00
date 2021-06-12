@@ -1,0 +1,57 @@
+{% extends 'blog/base_account.html' %}
+{% load bootstrap %}
+{% block title %}
+    Добавить пункт поста
+{% endblock %}
+{% block account-content %}
+    <div class="container text-center-sign-in">
+        {% if form.errors %}
+            <p>{{ form.error }}</p>
+            <p>Что-то забыл</p>
+            <form action="."
+            class="form-sign-in login-form"
+            enctype="multipart/form-data">
+                {{ form.post_header |bootstrap }}
+                {{ form.post_point_text |bootstrap }}
+                {{ form.post_point_image |bootstrap }}
+                {% csrf_token %}
+                <button class="btn btn-lg btn-primary mt-2"
+                type="submit">
+                    Добавить пункт поста
+                </button>
+            </form>
+        {% elif form.is_valid %}
+            <h1 class="h3 mb-3 font-weight-normal">
+                Пункт поста добавлен
+            </h1>
+            <h2 class="mb-3 font-weight-normal">
+                Вы Можете :
+            </h2>
+            <a href="{% url 'blog:post_points_list' post_id %}"
+                class="btn btn-dark">
+                Вернуться к списку ваших постов
+            </a>
+            <a href="{% url 'blog:post_points_add' post_id %}"
+                class="btn btn-primary">
+                Добавить новый пункт поста
+            </a>
+        {% else %}
+            <h1 class="h3 mb-3 font-weight-normal">
+                Пожалуйста заполните поля
+            </h1>
+            <form action="."
+            class="form-sign-in login-form"
+            enctype="multipart/form-data">
+                {{ form.post_header |bootstrap }}
+                {{ form.post_point_text |bootstrap }}
+                {{ form.post_point_image |bootstrap }}
+                {% csrf_token %}
+                <button class="btn btn-lg btn-primary mt-2"
+                type="submit">
+                    Добавить пункт поста
+                </button>
+            </form>
+
+        {% endif %}
+    </div>
+{% endblock %}

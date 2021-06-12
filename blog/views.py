@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from taggit.models import Tag
 
 from .forms import CommentForm, PostForm
-from .forms import LoginForm
+from .forms import LoginForm,PostPointForm
 # Create your views here.
 from .models import Post, PostPoint, Comment
 
@@ -202,6 +202,27 @@ def post_point_list(request, post_id):
                   'blog/account/post_points.html',
                   {'post': post,
                    'post_points': post_points})
+
+
+@login_required
+def post_point_add(request,post_id):
+    post=get_object_or_404(Post,id=post_id)
+    form=PostPointForm()
+    if request.method=="POST":
+        form=PostPointForm(request.POST,
+                           request.FILES)
+        if form.is_valid():
+            post_point=form.save(commit=False)
+            post_point.post=post
+            post_point.save()
+    return render(request,
+          'blog/account/post_point_add.html',
+                  {'form':form,
+                   'post':post})
+
+
+
+
 
 
 #TODO Сделать добавление этапа готовки

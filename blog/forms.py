@@ -61,3 +61,12 @@ class PostForm(forms.ModelForm):
     class Meta:
         model=Post
         fields=('title','short_description','image','tags')
+
+
+class PostPointForm(forms.ModelForm):
+    class Meta:
+        fields=('post_header','post_point_text',
+                'post_point_image')
+
+
+

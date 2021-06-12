@@ -7,7 +7,7 @@
         <h2 class="text-center mb-4">
             Этапы готовки рецепта{{ post.title }}
         </h2>
-        <a href=""
+        <a href="{% url 'blog:post_point_add' post.id %}"
            class="btn btn-primary m-2 add-point">
             Добавить Этап
         </a>
