@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from taggit.models import Tag
 
 from .forms import CommentForm, PostForm
-from .forms import LoginForm,PostPointForm
+from .forms import LoginForm, PostPointForm
 # Create your views here.
 from .models import Post, PostPoint, Comment
 
@@ -205,26 +205,53 @@ def post_point_list(request, post_id):
 
 
 @login_required
-def post_point_add(request,post_id):
-    post=get_object_or_404(Post,id=post_id)
-    form=PostPointForm()
-    if request.method=="POST":
-        form=PostPointForm(request.POST,
-                           request.FILES)
+def post_point_edit(request, post_point_id):
+    post_point = get_object_or_404(PostPoint,
+                                   id=post_point_id)
+    post = get_object_or_404(Post,
+                             id=post_point.post.id)
+    post_point_edit_form=PostPointForm(
+        instance=post_point)
+    if request.method=='POST':
+        post_point_edit_form=PostPointForm(
+                            request.POST,
+                            instance=post_point)
+        if post_point_edit_form.is_valid():
+            post_point_edit_form.save()
+    return render(request,
+              'blog/account/post_point_edit.html',
+                  {'form':post_point_edit_form,
+                    'post':post,
+                   'post_point':post_point})
+
+@login_required
+def post_point_delete(request,post_point_id):
+    try:
+        post_point=get_object_or_404(PostPoint,
+                             id=post_point_id)
+        post_point.delete()
+        return redirect('blog:post_points_list',
+                post_id=post_point.post.id)
+    except PostPoint.DoesNotExist:
+        return redirect('blog:post_list')
+    
+@login_required
+def post_point_add(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    form = PostPointForm()
+
+    if request.method == "POST":
+        form = PostPointForm(request.POST,
+                             request.FILES)
         if form.is_valid():
-            post_point=form.save(commit=False)
-            post_point.post=post
+            post_point = form.save(commit=False)
+            post_point.post = post
             post_point.save()
     return render(request,
-          'blog/account/post_point_add.html',
-                  {'form':form,
-                   'post':post})
+                  'blog/account/post_point_add.html',
+                  {'form': form,
+                   'post': post})
 
-
-
-
-
-
-#TODO Сделать добавление этапа готовки
-#TODO Сделать редактирования этапа готовки
-#TODO Сделать удаление этапа готовки
+# TODO Сделать добавление этапа готовки
+# TODO Сделать редактирования этапа готовки
+# TODO Сделать удаление этапа готовки

@@ -28,8 +28,16 @@ urlpatterns=[
          views.post_point_list,
          name='post_points_list'),
 
-    path('post_points_add/',
+    path('post_point_add/<int:post_id>/',
          views.post_point_add,
-         name='post_point_add')
+         name='post_point_add'),
+
+    path('post_point_edit/<int:post_point_id>/',
+         views.post_point_edit,
+         name='post_point_edit'),
+
+    path('post_point_delete/<int:post_point_id>/',
+         views.post_point_delete,
+         name='post_point_delete')
 
 ]

@@ -1,5 +1,5 @@
 from  django import forms
-from .models import Comment, Post
+from .models import Comment, Post,PostPoint
 class EmailPostForm(forms.Form):
     name=forms.CharField(max_length=25,
         widget=forms.TextInput(attrs={
@@ -65,6 +65,7 @@ class PostForm(forms.ModelForm):
 
 class PostPointForm(forms.ModelForm):
     class Meta:
+        model=PostPoint
         fields=('post_header','post_point_text',
                 'post_point_image')
 
