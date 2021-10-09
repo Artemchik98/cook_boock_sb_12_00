@@ -1,14 +1,14 @@
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import redirect, render, get_object_or_404
 from taggit.models import Tag
 
-from .forms import CommentForm, PostForm
-from .forms import LoginForm, PostPointForm
-# Create your views here.
+from .forms import CommentForm, PostForm, LoginForm, \
+    PostPointForm, UserCreateForm, UserEditForm, SearchForm
 from .models import Post, PostPoint, Comment
 
 
@@ -41,6 +41,21 @@ def user_login(request):
 @login_required
 def post_list(request, tag_slug=None):
     object_list = Post.objects.all()
+    search_form = SearchForm()
+    query = None
+    if 'query' in request.GET:
+        search_form = SearchForm(request.GET)
+        if search_form.is_valid():
+            query = search_form.cleaned_data['query']
+            try:
+                object_list = Post.objects.filter(
+                    title__contains=query,
+                    status='published')
+            except:
+                object_list = None
+    else:
+        object_list=Post.objects.filter(
+            status='published')
     tag = None
     if tag_slug:
         tag = get_object_or_404(Tag, slug=tag_slug)
@@ -59,7 +74,8 @@ def post_list(request, tag_slug=None):
     return render(request, 'blog/post/list.html',
                   {'page': page,
                    'posts': posts,
-                   'tag': tag})
+                   'tag': tag,
+                   'search_form':search_form})
 
 
 @login_required
@@ -174,6 +190,7 @@ def post_edit(request, post_id):
     post_edit_form = PostForm(instance=post)
     if request.method == "POST":
         post_edit_form = PostForm(request.POST,
+                                  request.FILES,
                                   instance=post)
         if post_edit_form.is_valid():
             post_edit_form.save()
@@ -210,31 +227,34 @@ def post_point_edit(request, post_point_id):
                                    id=post_point_id)
     post = get_object_or_404(Post,
                              id=post_point.post.id)
-    post_point_edit_form=PostPointForm(
+    post_point_edit_form = PostPointForm(
         instance=post_point)
-    if request.method=='POST':
-        post_point_edit_form=PostPointForm(
-                            request.POST,
-                            instance=post_point)
+    if request.method == 'POST':
+        post_point_edit_form = PostPointForm(
+            request.POST,
+            request.FILES,
+            instance=post_point)
         if post_point_edit_form.is_valid():
             post_point_edit_form.save()
     return render(request,
-              'blog/account/post_point_edit.html',
-                  {'form':post_point_edit_form,
-                    'post':post,
-                   'post_point':post_point})
+                  'blog/account/post_point_edit.html',
+                  {'form': post_point_edit_form,
+                   'post': post,
+                   'post_point': post_point})
+
 
 @login_required
-def post_point_delete(request,post_point_id):
+def post_point_delete(request, post_point_id):
     try:
-        post_point=get_object_or_404(PostPoint,
-                             id=post_point_id)
+        post_point = get_object_or_404(PostPoint,
+                                       id=post_point_id)
         post_point.delete()
         return redirect('blog:post_points_list',
-                post_id=post_point.post.id)
+                        post_id=post_point.post.id)
     except PostPoint.DoesNotExist:
         return redirect('blog:post_list')
-    
+
+
 @login_required
 def post_point_add(request, post_id):
     post = get_object_or_404(Post, id=post_id)
@@ -252,6 +272,33 @@ def post_point_add(request, post_id):
                   {'form': form,
                    'post': post})
 
-# TODO Сделать добавление этапа готовки
-# TODO Сделать редактирования этапа готовки
-# TODO Сделать удаление этапа готовки
+
+def sign_up(request):
+    user_form = UserCreateForm()
+    if request.method == 'POST':
+        user_form = UserCreateForm(request.POST)
+        if user_form.is_valid():
+            new_user = User.objects.create_user(
+                **user_form.cleaned_data)
+            new_user.save()
+            login(request,
+                  authenticate(
+                      username=user_form.cleaned_data['username'],
+                      password=user_form.cleaned_data['password']))
+            return redirect('blog:post_list')
+    return render(request, 'registration/sign_up.html',
+                  {'user_form': user_form})
+
+
+@login_required
+def edit_profile(request):
+    user_form = UserEditForm(instance=request.user)
+    if request.method == 'POST':
+        user_form = UserEditForm(request.POST,
+                                 instance=request.user)
+        if user_form.is_valid():
+            user_form.save()
+    return render(request, 'blog/account/profile.html',
+                  {'user_form': user_form})
+
+

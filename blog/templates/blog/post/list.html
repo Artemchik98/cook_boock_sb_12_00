@@ -1,5 +1,18 @@
 {%extends 'blog/base.html'%}
 {%block title%} My blog {%endblock%}
+
+{% block search_form %}
+    <form class="form-inline my-2 my-lg-0 search-form">
+        {{ search_form }}
+        {% csrf_token %}
+        <button class="btn btn-dark my-2 my-sm-2"
+        type="submit">
+                Поиск
+        </button>
+    </form>
+{% endblock %}
+
+
 {%block content%}
     <h1 class="title text-center my-3">Кулинарная книга</h1>
     <div class="container">
