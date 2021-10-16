@@ -17,7 +17,14 @@ class PostAdmin(admin.ModelAdmin):
     date_hierarchy = 'publish'
     ordering = ('status','publish')
 
-admin.site.register(PostPoint)
+# admin.site.register(PostPoint)
+@admin.register(PostPoint)
+class PostPointAdmin(admin.ModelAdmin):
+    list_display = ('post_point_header',
+                    'post')
+    list_filter = ('post__id',)
+    search_fields = ('post',)
+
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):

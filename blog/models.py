@@ -38,6 +38,8 @@ class Post(models.Model):
         blank=False,
         verbose_name='Изображение')
     tags = TaggableManager()
+    favourite = models.ManyToManyField(User,
+           related_name='fav_posts',blank=True)
 
     class Meta:
         ordering = ('-publish',)
@@ -52,7 +54,8 @@ class Post(models.Model):
                        args=[self.publish.year,
                              self.publish.month,
                              self.publish.day,
-                             self.slug])
+                             self.slug,
+                             self.id])
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -73,8 +76,8 @@ class PostPoint(models.Model):
                              verbose_name='Пост этапа готовки')
 
     post_point_header = models.CharField(max_length=250,
-                                   default='HEADER',
-                                   verbose_name='Шапка этапа готовки')
+                                         default='HEADER',
+                                         verbose_name='Шапка этапа готовки')
 
     post_point_text = models.TextField(
         verbose_name='Текст этапа готовки')

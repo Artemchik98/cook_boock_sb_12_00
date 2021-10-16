@@ -54,7 +54,7 @@ def post_list(request, tag_slug=None):
             except:
                 object_list = None
     else:
-        object_list=Post.objects.filter(
+        object_list = Post.objects.filter(
             status='published')
     tag = None
     if tag_slug:
@@ -75,17 +75,18 @@ def post_list(request, tag_slug=None):
                   {'page': page,
                    'posts': posts,
                    'tag': tag,
-                   'search_form':search_form})
+                   'search_form': search_form})
 
 
 @login_required
 def post_detail(request, year,
-                month, day, post):
+                month, day, post,post_id):
     post_object = get_object_or_404(Post,
                                     slug=post,
                                     publish__year=year,
                                     publish__month=month,
-                                    publish__day=day)
+                                    publish__day=day,
+                                    id=post_id)
     post_points = PostPoint.objects.filter(
         post=post_object)
     comments = post_object.comment.filter(
@@ -302,3 +303,12 @@ def edit_profile(request):
                   {'user_form': user_form})
 
 
+def add_to_favourite(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    post.favourite.add(request.user)
+    return redirect('blog:post_detail',
+                    year=post.publish.year,
+                    month=post.publish.month,
+                    day=post.publish.day,
+                    post=post.slug,
+                    post_id=post.id)
