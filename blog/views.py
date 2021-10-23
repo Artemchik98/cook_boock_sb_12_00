@@ -331,3 +331,4 @@ def delete_from_favourite_in_dashboard(request,post_id):
 
 def favourite_posts(request):
     return render(request,'blog/account/fav_posts.html')
+
