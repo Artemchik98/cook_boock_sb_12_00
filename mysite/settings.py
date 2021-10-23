@@ -26,7 +26,7 @@ SECRET_KEY = 'c+67_4@(6!m-)oxwbh=+awa8a7dqi!xnl5z)b@ytp)@yv(drbb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['coocking-book-12-00.herokuapp.com','localhost','127.0.0.1']
+ALLOWED_HOSTS = ['the-best-cook-book.herokuapp.com','localhost','127.0.0.1']
 
 
 # Application definition
