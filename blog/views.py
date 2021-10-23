@@ -80,7 +80,7 @@ def post_list(request, tag_slug=None):
 
 @login_required
 def post_detail(request, year,
-                month, day, post,post_id):
+                month, day, post, post_id):
     post_object = get_object_or_404(Post,
                                     slug=post,
                                     publish__year=year,
@@ -312,3 +312,22 @@ def add_to_favourite(request, post_id):
                     day=post.publish.day,
                     post=post.slug,
                     post_id=post.id)
+
+
+def delete_from_favourite(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    post.favourite.remove(request.user)
+    return redirect('blog:post_detail',
+                    year=post.publish.year,
+                    month=post.publish.month,
+                    day=post.publish.day,
+                    post=post.slug,
+                    post_id=post.id)
+
+def delete_from_favourite_in_dashboard(request,post_id):
+    post=get_object_or_404(Post,id=post_id)
+    post.favourite.remove(request.user)
+    return redirect('blog:favourite_posts')
+
+def favourite_posts(request):
+    return render(request,'blog/account/fav_posts.html')
