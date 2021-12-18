@@ -4,6 +4,16 @@ from django.urls import path
 
 from . import views
 
+from rest_framework import routers
+from .api import views as apiviews
+from django.urls import include
+
+router=routers.DefaultRouter()
+router.register(r'posts',apiviews.PostViewSet)
+router.register(r'post_points',apiviews.PostPointViewSet)
+router.register(r'comments',apiviews.CommentViewSet)
+
+
 app_name = 'blog'
 urlpatterns = [
     path('', views.post_list, name='post_list'),
@@ -63,6 +73,21 @@ urlpatterns = [
 
     path('delete_from_favourite_in_dashboard/<int:post_id>/',
          views.delete_from_favourite_in_dashboard,
-         name='delete_from_favourite_in_dashboard')
+         name='delete_from_favourite_in_dashboard'),
 
+    path('api/',include(router.urls)),
+
+    path('api/post/', apiviews.post_list,
+         name='post_list'),
+    path('api/post/<pk>/', apiviews.post_detail,
+         name='post_detail'),
+
+
+    path('api/post_create/',apiviews.post_create,name='post_create'),
+    path('api/post_point_create/',
+         apiviews.post_point_create,
+         name='post_point_create'),
+
+    path('api/post_update/',apiviews.post_update,name='post_update'),
+    path('api/post_delete/<pk>/',apiviews.post_delete,name='post_delete'),
 ]

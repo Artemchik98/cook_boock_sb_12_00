@@ -33,6 +33,7 @@ class Post(models.Model):
                               choices=STATUS_CHOICES,
                               default='draft',
                               verbose_name='Статус публикации')
+
     image = models.ImageField(
         upload_to='product_images/',
         blank=False,
@@ -40,6 +41,8 @@ class Post(models.Model):
     tags = TaggableManager()
     favourite = models.ManyToManyField(User,
            related_name='fav_posts',blank=True)
+
+
 
     class Meta:
         ordering = ('-publish',)
@@ -73,7 +76,8 @@ class PostPoint(models.Model):
     post = models.ForeignKey(Post,
                              on_delete=models.CASCADE,
                              default=None,
-                             verbose_name='Пост этапа готовки')
+                             verbose_name='Пост этапа готовки',
+                             related_name="post_post_points")
 
     post_point_header = models.CharField(max_length=250,
                                          default='HEADER',

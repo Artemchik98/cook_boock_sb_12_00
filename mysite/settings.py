@@ -10,12 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -26,8 +25,7 @@ SECRET_KEY = 'c+67_4@(6!m-)oxwbh=+awa8a7dqi!xnl5z)b@ytp)@yv(drbb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['the-best-cook-book.herokuapp.com','localhost','127.0.0.1']
-
+ALLOWED_HOSTS = ['the-best-cook-book.herokuapp.com', 'localhost', '127.0.0.1']
 
 # Application definition
 
@@ -41,6 +39,8 @@ INSTALLED_APPS = [
     'taggit',
     'bootstrapform',
     'django.contrib.admin',
+
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -77,7 +77,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
@@ -88,6 +87,13 @@ DATABASES = {
     }
 }
 
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 2
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -107,7 +113,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -121,30 +126,28 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
 
-MEDIA_URL='/media/'
-MEDIA_ROOT=os.path.join(BASE_DIR,'media/')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'your_login@gmail.com'
+EMAIL_HOST_PASSWORD = 'password'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
-EMAIL_HOST='smtp.gmail.com'
-EMAIL_HOST_USER='your_login@gmail.com'
-EMAIL_HOST_PASSWORD='password'
-EMAIL_PORT=587
-EMAIL_USE_TLS=True
+LOGIN_REDIRECT_URL = 'blog:post_list'
+LOGIN_URL = 'blog:login'
+LOGOUT_URL = 'blog:logout'
 
-LOGIN_REDIRECT_URL='blog:post_list'
-LOGIN_URL='blog:login'
-LOGOUT_URL='blog:logout'
-
-
-STATIC_ROOT=os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 import dj_database_url
-db_from_env=dj_database_url.config()
+
+db_from_env = dj_database_url.config()
 DATABASES['default'].update(db_from_env)
